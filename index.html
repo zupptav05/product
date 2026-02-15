@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro de Usuarios API</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: sans-serif; margin: 50px; }
+        input { display: block; margin-bottom: 10px; padding: 8px; width: 250px; }
+        button { padding: 10px 20px; background: #0078d4; color: white; border: none; cursor: pointer; }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Registrar nuevo usuario</h2>
+    <input type="number" id="id" placeholder="ID (ej: 3)">
+    <input type="text" id="nombre" placeholder="Nombre completo">
+    <input type="text" id="status" placeholder="Status (Activo/Inactivo)">
+    
+    <button onclick="registrar()">Enviar a la Base de Datos</button>
+
+    <script src="script.js">
+        async function registrar() {
+            const url = 'http://localhost:8080/MiPrimerAPI/webresources/usuarios';
+            const datos = {
+                id: document.getElementById('id').value,
+                nombre: document.getElementById('nombre').value,
+                status: document.getElementById('status').value
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(datos)
+                });
+
+                if (response.ok) {
+                    alert("¡Usuario registrado con éxito!");
+                    location.reload(); // Recarga para limpiar campos
+                } else {
+                    alert("Error al registrar. Revisa la consola.");
+                }
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                alert("No se pudo conectar con la API. ¿Está encendido GlassFish?");
+            }
+        }
+    </script>
+</body>
+</html>
